@@ -8,12 +8,11 @@
     package:
       name: 
         - htop
-        - tmux
-        - vim-nox
+        - virtualbox
+        - vagrant 
 
-  - name: copy walpaper file 
-    copy: 
-      src: files/walpaper.png
-      dest: /usr/share/backgrounds/ansible-walpaper.png
-      owner: root
-      group: root
+  - name: Update apt repo and cache on all Debian/Ubuntu boxes
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+  - name: Upgrade all packages on servers
+    apt: upgrade=dist force_apt_get=yes
