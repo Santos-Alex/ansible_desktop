@@ -10,3 +10,10 @@
         - htop
         - tmux
         - vim-nox
+
+  - name: copy walpaper file 
+    copy: 
+      src: files/walpaper.png
+      dest: /usr/share/backgrounds/ansible-walpaper.png
+      owner: root
+      group: root
