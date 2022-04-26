@@ -1,0 +1,8 @@
+- hosts: local
+  connection: local
+  become: false
+  roles: 
+    - roles
+
+  tasks:
+    - include: playbooks/playbook.yml
