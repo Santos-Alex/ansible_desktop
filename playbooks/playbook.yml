@@ -1,6 +1,2 @@
-
-- hosts: local
-  connection: local
-  become: false
-  roles: 
-    - roles
+- roles: 
+  - roles
