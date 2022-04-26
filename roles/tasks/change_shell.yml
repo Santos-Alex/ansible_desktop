@@ -1,0 +1,19 @@
+---
+  - name: Change for current bash shell user by zsh
+    become: true
+    user:
+      name: "{{ the_user }}"
+      shell: /bin/zsh
+    tags: shell
+ 
+ 
+  - name: /!\ End of playbook
+    pause: prompt="Pressing ENTER this will log off the user or press Ctrl+c to cancel"
+    tags: shell
+ 
+ 
+  - name: Log off with a kill command 
+    become: false
+    shell: 
+      cmd: pkill -u $USER
+    tags: shell

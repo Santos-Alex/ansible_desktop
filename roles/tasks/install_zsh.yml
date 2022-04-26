@@ -1,0 +1,94 @@
+---
+ 
+## Installation of packages
+  - name: Installation of necessary packages, tested xubuntu 20-04
+    become: true
+    apt:
+      update_cache: yes
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - zsh 
+      - zsh-theme-powerlevel9k
+      - zsh-syntax-highlighting
+    tags: apt
+ 
+  - name: creation of .zsh directory
+    become: false
+    file:
+      path: "~/.zsh"
+      state: directory
+      mode: 0755
+    tags: dir
+ 
+  - name: Clone of the autosuggestions module
+    become: false
+    git:
+      repo: https://github.com/zsh-users/zsh-autosuggestions.git
+      dest: ~/.zsh
+      force: yes
+      version: master
+    tags: git
+ 
+  - name: Installation of oh-my-zsh
+    become: false
+    shell:
+      cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    tags: ohmyzsh
+ 
+ 
+## Customizing .zshrc
+  - name: Replacing information in the ~/.zshrc file
+    become: false
+    lineinfile:
+      path: ~/.zshrc
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+    with_items:
+    - { regexp: 'ZSH_THEME="robbyrussell"', line: 'ZSH_THEME="agnoster"' }
+    - { regexp: 'plugins=\(git\)', line: 'plugins=(git colored-man-pages ansible cp sudo yum)' }
+    - { regexp: '# HIST_STAMPS="mm/dd/yyyy"', line: 'HIST_STAMPS="yyyy-mm-dd"' }
+    tags: personnalisation
+ 
+  - name: Added information in ~/.zshrc file
+    become: false
+    lineinfile:
+      path: ~/.zshrc
+      insertafter: 'HIST_STAMPS="yyyy-mm-dd'
+      line: "{{ item }}"
+    with_items:
+      - "export EDITOR='vim'"
+      - 'export SSH_KEY_PATH="~/.ssh/rsa_id"'
+      - '# Add ssh key'
+      - 'export HISTORY_IGNORE="(history|ls -ltr|ll|ls -la|lll|ls|pwd|exit|cd|cd ..)"'
+      - "# Delete order that populates the history"
+      - 'setopt HIST_FIND_NO_DUPS'
+      - '# Remove duplicate from search (ctrl+r) (ctrl+r)'
+      - 'export HISTFILESIZE=200000'
+      - 'export HISTSIZE=100000'
+      - '# Limit and size'
+    tags: personnalisation
+ 
+  - name: Added information to the ~/.bashrc file
+    become: false
+    lineinfile:
+      path: ~/.bashrc
+      insertafter: 'HIST_STAMPS="yyyy-mm-dd'
+      line: "{{ item }}"
+    with_items:
+      - '#sources'
+      - 'source ~/.oh-my-zsh/oh-my-zsh.sh'
+      - 'source /usr/share/powerlevel9k/powerlevel9k.zsh-theme'
+      - 'source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+      - 'source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh'
+    tags: personnalisation
+ 
+ 
+  - name: preparing the zsh shell for the user
+    become: false
+    vars:
+      the_user: "{{ ansible_user_id }}"
+    user:
+      name: "{{ the_user }}"
+      shell: /bin/zsh
+    tags: shell

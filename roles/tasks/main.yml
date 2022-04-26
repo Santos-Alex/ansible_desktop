@@ -1,0 +1,7 @@
+---
+- include_tasks: install_zsh.yml
+  tags:
+    - shell
+- include_tasks: change_shell.yml
+  tags:
+    - shell

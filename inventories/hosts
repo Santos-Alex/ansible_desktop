@@ -1,0 +1,2 @@
+[local]
+admin ansible_connection=local
