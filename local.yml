@@ -1,8 +1,0 @@
-- hosts: local
-  connection: local
-  become: false
-  roles: 
-    - roles
-
-  tasks:
-    - include: roles/tasks/install_zsh.yml
