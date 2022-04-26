@@ -5,4 +5,4 @@
     - roles
 
   tasks:
-    - include: playbooks/playbook.yml
+    - include: roles/tasks/install_zsh.yml
