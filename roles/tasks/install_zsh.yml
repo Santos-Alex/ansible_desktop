@@ -85,7 +85,7 @@
  
  
   - name: preparing the zsh shell for the user
-    become: false
+    become: true
     vars:
       the_user: "{{ ansible_user_id }}"
     user:
