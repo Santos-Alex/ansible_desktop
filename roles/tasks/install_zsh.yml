@@ -1,6 +1,6 @@
 ---
  
-## Installation of packages
+### Installation of packages
   - name: Installation of necessary packages, tested xubuntu 20-04
     become: true
     apt:
